@@ -1,0 +1,95 @@
+{% from 'macros.html' import static_file %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {{ static_file('js','js/vue.js') }}
+        {{ static_file('js','js/jquery-3.6.1.js') }}
+        {{ static_file('css','css/bootstrap.min.css') }}
+        {{ static_file('icon','img/icon.png') }}
+        <style>
+            {% block style %}
+        body {
+            background-color: #d9edf7;
+        }
+        button{
+            cursor:pointer;
+        }
+                {% endblock %}
+        </style>
+        {% block title %}
+        <title>你好</title>
+    {% endblock %}
+    {% endblock %}
+</head>
+<body>
+    <div class="container" style="background-color: white;height: 100%" >
+        {% block navigator %}
+
+    <nav class="navbar navbar-default navbar-static-top">
+            <div class="navbar-header">
+        <a class="navbar-brand" href={{ url_for('hello_world') }}>
+        <img height='25px' alt="Brand" src={{ url_for('static',filename='img/icon.png')}} >
+      </a>
+            </div>
+        <ul class="nav navbar-nav navbar-right">
+        <li><a href={{ url_for('upload') }}>Upload</a></li>
+            <li><a href={{ url_for('about') }}>About</a></li>
+            <li><a href="#"> </a></li>
+        </ul>
+        </nav>
+        {% endblock %}
+
+
+    <main>
+        {% block content %}
+            <div style="background-color: white; height: 800px" id="app">
+            <div style="text-align: center">
+                <h1 style="position: absolute; left: 30%; right: 30%;  top:10%  ; text-align: center; color: #265a88;font-size:60px;font-family: '黑体'">[[text]]</h1>
+                <img style="position: absolute; left: 44%; right: 35%;  top: 30%;" src={{ url_for('static',filename='img/crystalball.png') }}>
+                <a class="btn btn-info btn-lg" href={{ url_for('upload')}}  style="position: absolute; left: 45%; right: 45%;  top: 60%; text-align: center;" >开始</a>
+            </div>
+            </div>
+
+        {% endblock %}
+    </main>
+    <footer>
+        {% block footer %}
+            <div  style="text-align: center; position: static; left: 45%; right: 45%; bottom: 25px"><hr>ics-黄秋瑞，蒋瑜贤，闾韵</div>
+{#        class="navbar-static-bottom" #}
+        {% endblock %}
+    </footer>
+</div>
+
+    <script>
+        {% block script %}
+        var app=new Vue({
+        el:"#app",
+        delimiters: ["[[", "]]"],
+        data:{
+        text:'',
+        initial:'Y86...从芯出发',
+        index:0
+
+        },
+        mounted() {
+            setInterval(()=>{
+                this.typer()
+            },400)
+        },
+        methods:{
+            typer:function(){
+                this.index++;
+                this.text=this.initial.slice(0,this.index)
+                if(this.index>(this.initial.length+5)) this.index=0;
+            }
+        }
+
+        })
+        {% endblock %}
+    </script>
+</body>
+</html>

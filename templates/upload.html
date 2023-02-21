@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import form_field %}
+
+{% block style %}
+    {{ super() }}
+    .fold{
+        cursor:pointer;
+    }
+{% endblock %}
+{% block title %}
+    <title>请上传文件</title>
+{% endblock %}
+{% block content %}
+    <input id="test-dom1" type="hidden" value="{{success}}">
+    <input id="test-dom2" type="hidden" value="{{receive}}">
+    <div style="background-color: white; height: 800px" id="app">
+    <div style="position: absolute; left: 30%; right: 30%;  top:30%  ;bottom:30%; text-align: center;">
+    <h2>请上传文件</h2>
+
+    <form method="post" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+        <label for="file" class="fold" @click="unfold"><img :src='img_src'> </label>
+       {{ form.file(style='display:none') }}<br>
+    {% if form.file.errors %}
+        {% for error in form.file.errors %}
+        <small class="error">{{ error }}</small><br>
+        {% endfor %}
+    {% endif %}
+
+    <input type="submit" value="submit" class="btn btn-info btn-lg" @click="after_submit">
+    </form>
+    <div class="row">
+        <br>
+        <br>
+        <div v-if="sub==1">上传成功！</div>
+        <button class="btn btn-warning" @click="change_show" v-if="sub==1" >开始模拟</button>
+        <div v-else="sub==1">请上传合适的文件</div>
+        <br>
+        <br>
+        <a v-if="show" href={{ url_for('display') }} >模拟结果</a>
+    </div>
+    </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    var img_s="img/file.png";
+    var app=new Vue({
+
+        el:"#app",
+        delimiters: ["[[", "]]"],
+        data:{
+        img_src:"{{ url_for('static',filename='img/fold.png') }}",
+        img_open:"{{ url_for('static',filename='img/file.png') }}",
+        show:false,
+        success:1,
+        sub:false
+    },
+        mounted() {
+
+        var back_success = document.getElementById('test-dom1')
+        this.success = back_success.value
+
+        var upload_success = document.getElementById('test-dom2')
+        this.sub = upload_success.value
+
+        console.log(this.success);
+        console.log(this.sub)
+        },
+        methods:{
+        unfold:function(){
+        console.log(this.show);
+        this.img_src = this.img_open;
+        },
+
+        after_submit:function(){
+            console.log(this.sub);
+        },
+
+        change_show:function(){
+        console.log(this.success);
+        console.log(this.show);
+            if(this.success == 0)
+            {this.show=true;}
+            else
+            {this.show=false;}
+            console.log(this.show)
+        }
+        }
+    })
+        {% endblock %}
+        

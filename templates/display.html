@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>CPU模拟界面</title>
+{% endblock %}
+{#点开始模拟后才显示该显示的值#}
+{% block content %}
+ <div class="container" id="app">
+        <h1 style="text-align: center;">CPU模拟</h1>
+        <div class="row" >
+            <div class ="col-md-8" >
+
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="row">
+                <h2>指令情况</h2>
+                    </div>
+                    <div class="row" id="ins">
+                        <table class="table">
+                            <tr>
+                                <td>上一条</td>
+
+                                <td v-if="index>0">
+                                     [[ins[index-1][0] ]]
+                                </td>
+
+                                <td v-else>
+                                    /
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>当前指令</td>
+                                <td>[[ins[index][0] ]]</td>
+                            </tr>
+                            <tr>
+                                <td>下一条
+                                <td v-if="index<d.length-1">[[ins[index+1][0] ]]</td>
+                                <td v-else>没有了</td>
+                            </tr>
+                        </table>
+                        </div>
+                </div>
+                <div class ="col-md-4" >
+                <!-- 放条件码 -->
+                <h2>条件码</h2>
+                <table class="table">
+                    <th>
+                        <tr>
+                            <td class="col-md-8">条件码</td>
+                            <td>值</td>
+                        </tr>
+                    </th>
+                    <tr v-for="(code,index) in d[index].CC">
+                        <td class="text-uppercase">[[index]]</td>
+                        <td>[[code]]</td>
+                    </tr>
+                </table>
+                <hr/>
+                <h2>STATE : [[d[index].STAT]]</h2>
+                </div>
+                </div>
+                <br/>
+            <div class="row">
+                <!-- <div class="col-md-8"> -->
+                <h2>MEMORY</h2>
+                <table class="table">
+                    <th>
+                        <tr>
+                            <td class="col-md-4">memory</td>
+                            <td>值</td>
+                        </tr>
+                    </th>
+                    <tr v-for="(m,index) in d[index].MEM">
+                        <td>[[index]]</td>
+                        <td>[[m]]</td>
+                    </tr>
+                </table>
+                </div>
+            </div>
+
+
+            <div class ="col-md-4" >
+               <h2>寄存器</h2>
+                <table class="table">
+                    <th>
+                        <tr>
+                            <td class="col-md-4">寄存器</td>
+                            <td>值</td>
+                        </tr>
+                    </th>
+                    <tr v-for="(reg,index) in d[index].REG">
+                        <td>[[index]]</td>
+                        <td>[[reg]]</td>
+                    </tr>
+                </table>
+                <hr/>
+                <h2>PC : [[d[index].PC]]</h2>
+                <hr/>
+            </div>
+        </div>
+        <div style="text-align:center;">
+        <button type="button" id="btn" class="btn btn-success" @click="addindex" class="center-block">下一步</button>
+        <button type="button" class="btn btn-warning" @click="reset" class="center-clock">RESET</button>
+    </div>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+
+        i=0;
+
+            $.ajax({
+            url: "/file",
+            type: "GET",
+            dataType: "json",
+            success:
+            function (data) {
+            var app=new Vue({
+            el:"#app",
+            delimiters: ["[[", "]]"],
+            data:{
+                d:data[0],
+                ins:data[1],
+                index:i,
+            },
+            methods:{
+                addindex:function(){
+                    console.log(typeof this.d)
+                    console.log(this.ins[0])
+                    if(this.index<(this.d).length) this.index++;
+                    else alert("没有更多指令");
+                },
+                reset:function(){
+                    this.index=0;
+                }
+            }
+        })
+            }
+        });
+
+
+{% endblock %}
