@@ -1,6 +1,7 @@
 # Y86---simulator
 project of ICS,Fudan University
-*运行方式:* 
+
+# 运行方式:
 1. 确保您有相关库文件：nlohmann，wtforms，flask<br>
 
 2. 编译后端程序：
