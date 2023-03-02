@@ -1,4 +1,4 @@
-# Y86---simulator
+# Y86--simulator
 project of ICS,Fudan University
 
 # 运行方式:
