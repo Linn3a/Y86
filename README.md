@@ -1,11 +1,16 @@
-# Y86--simulator
-project of ICS,Fudan University
+# [2022 Fall ICS] Y86 simulator
+*ICS of Cheng Jin, Fudan University*
 
-# 运行方式:
-1. 确保您有相关库文件：nlohmann，wtforms，flask<br>
+# Start 🚲
 
-2. 编译后端程序：
-- 在终端中打开该项目文件夹
-- 进入backend `cd backend`
-- 编译 `g++ cpuRun2.cpp trans.cpp Y86.cpp -o cpuTemp`
-- 打开项目，运行app.py(请编译完再打开项目)
+## requirements:
+
+nlohmann，wtforms，flask
+
+## run
+```
+cd backend
+g++ cpuRun2.cpp trans.cpp Y86.cpp -o cpuTemp
+cd ..
+python app.py
+```
